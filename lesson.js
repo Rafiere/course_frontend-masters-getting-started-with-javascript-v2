@@ -180,7 +180,7 @@ function otherClass(){
 otherClass() //Welcome!
 
 console.log(teacher) //Suzy
-console.log(topic) //Como essa variável não foi declarada, apenas atribuída, o JS criou uma declaração dessa variável no escopo global.
+// console.log(topic) //Como essa variável não foi declarada, apenas atribuída, o JS criou uma declaração dessa variável no escopo global.
 
 /* Undefined x Undeclared */
 console.log("\nUndefined vs Undeclared")
@@ -272,3 +272,80 @@ var myQuestion = ask("What is closure?");
 
 /* Quando chamarmos a variável "myQuestion" como uma função, ela se lembrará que o valor de "question" é "What is closure". */
 myQuestion(); //What is closure?
+
+
+/* This */
+console.log("\nThis")
+
+/* A referência para o "this" é determinado totalmente pelo LUGAR EM QUE A FUNÇÃO FOI CHAMADA. Não é nada sobre  */
+
+var workshop = {
+    teacher: "kyle",
+    ask(question){
+        console.log(this.teacher, question)
+    }
+}
+
+/* No exemplo acima, a ÚNICA coisa que determina o comportamento da palavra-chave "this" é a linha abaixo, que é onde a função está
+* sendo chamada. Nesse exemplo, o "workshop.ask()" permitirá que o "this" se referencie ao objeto "workshop". */
+workshop.ask("What is implicit binding?")
+
+/* No exemplo abaixo, o contexto do "this" é o ambiente da função "otherClass()", que está chamando a função "ask2()" pelo método
+* "ask.call()". */
+
+function ask2(question){
+    console.log(this.teacher, question)
+}
+
+function otherClass(){
+    var myContext = {
+        teacher: "Suzy"
+    };
+    ask.call(myContext, "Why?") //Suzy Why?
+}
+
+otherClass()
+
+/* Prototype */
+console.log("\nPrototype")
+
+/* Um protótipo significa que há um objeto onde qualquer instância estará conectada. No exemplo abaixo, todo objeto que
+*  for criado usando a palavra-chave "new" estará linkado ao "Workshop.prototype" e terá acesso ao método "ask()".
+*  O objeto "deepJS" NÃO POSSUI O MÉTODO "ask()". O protótipo em que ele está ligado possui, dessa forma, ele possui acesso a
+* esse método. */
+
+function Workshop(teacher){
+    this.teacher = teacher
+}
+
+Workshop.prototype.ask = function(question){
+    console.log(this.teacher, question);
+}
+
+var deepJS = new Workshop("Kyle");
+var reactJS = new Workshop("Suzy");
+
+deepJS.ask("Is 'prototype' a class?"); //Kyle Is 'prototype' a class?
+reactJS.ask("Isn't 'prototype' ugly?"); //Suzy Isn't 'prototype' ugly?
+
+/* Class */
+console.log("\nClass")
+
+/* A sintaxe de classes do ES6 é uma abstração do sistema de protótipos que facilita a utilização de herança no JS. */
+
+/* O exemplo abaixo é igual ao exemplo acima, porém, utilizando classes. */
+
+class Workshop2 {
+    constructor(teacher) {
+        this.teacher = teacher;
+    }
+    ask(question){
+        console.log(this.teacher, question)
+    }
+}
+
+var deepJS = new Workshop2("Kyle");
+var reactJS = new Workshop2("Suzy");
+
+deepJS.ask("Is 'prototype' a class?"); //Kyle Is 'prototype' a class?
+reactJS.ask("Isn't 'prototype' ugly?"); //Suzy Isn't 'prototype' ugly?
